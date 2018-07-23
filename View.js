@@ -1,6 +1,7 @@
 class View {
-    static DisplayPoliticians(data) {
-        console.table(data);
+    static Display(data) {
+        console.log(data);
+        // console.table(data);
     }
 }
 module.exports = View

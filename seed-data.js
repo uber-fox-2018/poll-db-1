@@ -31,8 +31,10 @@ class SeedData {
         for(let i = 1; i < data.length; i++) {
             let query = `INSERT INTO politicians (name, party, location, grade_current)
                         VALUES ("${data[i][0]}", "${data[i][1]}", "${data[i][2]}", "${data[i][3]}")`;
-            db.run(query, (err) => {
-                if (err) throw err;
+            db.serialize(() => {
+                db.run(query, (err) => {
+                    if (err) throw err;
+                });
             });
         }
     }
@@ -53,8 +55,10 @@ class SeedData {
         for(let i = 1; i < data.length; i++) {
             let query = `INSERT INTO voters (first_name, last_name, gender, age)
                         VALUES ("${data[i][0]}", "${data[i][1]}", "${data[i][2]}", "${data[i][3]}")`;
-            db.run(query, (err) => {
-                if (err) throw err;
+            db.serialize(() => {
+                db.run(query, (err) => {
+                    if (err) throw err;
+                });
             });
         }
     }
@@ -75,8 +79,10 @@ class SeedData {
         for(let i = 1; i < data.length; i++) {
             let query = `INSERT INTO votes (voter_id, politician_id)
                         VALUES ("${data[i][0]}", "${data[i][1]}")`;
-            db.run(query, (err) => {
-                if (err) throw err;
+            db.serialize(() => {
+                db.run(query, (err) => {
+                    if (err) throw err;
+                });
             });
         }
     }

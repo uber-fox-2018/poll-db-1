@@ -7,10 +7,12 @@ db.serialize( () => {
                 party	TEXT,
                 location	TEXT,
                 grade_current	NUMERIC )`;
-    db.run(politicians, (err) => { 
-        if(!err) {
-            console.log("Success add table politicians") 
-        }
+    db.serialize( () => {
+        db.run(politicians, (err) => { 
+            if(!err) {
+                console.log("Success add table politicians") 
+            }
+        });
     });
     
     let voters = `CREATE TABLE voters (
@@ -19,10 +21,12 @@ db.serialize( () => {
         last_name	TEXT,
         gender	TEXT,
         age	INTEGER );`;
-    db.run(voters, (err) => { 
-        if(!err) {
-            console.log("Success add table voters") 
-        }
+    db.serialize( () => {
+        db.run(voters, (err) => { 
+            if(!err) {
+                console.log("Success add table voter") 
+            }
+        });
     });
 
     let votes = `CREATE TABLE votes (
@@ -31,9 +35,11 @@ db.serialize( () => {
         politician_id	INTEGER,
         FOREIGN KEY(voter_id) REFERENCES voters(id),
         FOREIGN KEY(politician_id) REFERENCES politicians(id) );`;
-    db.run(votes, (err) => {  
-        if(!err) {
-            console.log("Success add table votes");
-        }
+    db.serialize( () => {
+        db.run(votes, (err) => { 
+            if(!err) {
+                console.log("Success add table votes") 
+            }
+        });
     });
 });
