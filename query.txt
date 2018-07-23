@@ -1,0 +1,25 @@
+1)
+SELECT name,party,grade_current FROM Politicians
+        WHERE party = "${data[0]}" AND grade_current between "${data[1]}" AND ${data[2]} 
+
+2)select count(name) as totalVote,name FROM Politicians 
+        inner join Votes 
+        ON Votes.politicianId = Politicians.id
+        WHERE name = "${data[0]}" 
+
+3)`select name,count() as totalVotes FROM Politicians as p
+        join Votes as v
+        ON p.id = v.politicianID
+        WHERE name like "Adam%" 
+        Group by name;
+         `
+
+4)`select Count(*)as totalVote, name, party, location from Politicians
+        JOIN Votes on Votes.politicianId = Politicians.id
+        group by name order BY totalVote DESC LIMIT 3;
+         `
+
+5)select first_name, last_name, gender, age
+        from Voters where Voters.id in 
+        (select Voters.id from Voters JOIN Votes ON Voters.id = Votes.voterId where Votes.politicianId = 
+        (select Politicians.id from Politicians where name = "Olympia Snowe"));

@@ -51,7 +51,7 @@ class Create {
 
             db.run(query, () => {
 
-                console.log('Successfully created a new row!');
+                console.log(data);
             });
         }
     }
