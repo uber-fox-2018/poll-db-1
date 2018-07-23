@@ -39,7 +39,7 @@ class Politician {
                                 AND grade_current BETWEEN 9 AND 11`;
         db.all(queryfilterOne, function (err, data) {
             if (err) throw err
-            console.log(data);
+            console.table(data);
         })
     }
 
@@ -54,7 +54,7 @@ class Politician {
                                WHERE Politicians.name = "Olympia Snowe"`;
         db.all(queryfilterTwo, function (err, data) {
             if (err) throw err
-            console.log(data);
+            console.table(data);
         })
     }
 
@@ -70,7 +70,7 @@ class Politician {
                                     GROUP BY Politicians.name`;
         db.all(queryfilterThree, function (err, data) {
             if (err) throw err
-            console.log(data);
+            console.table(data);
         })
     }
 
@@ -89,7 +89,7 @@ class Politician {
                                 LIMIT 3`;
         db.all(queryfilterFour, function (err, data) {
             if (err) throw err
-            console.log(data);
+            console.table(data);
         })
     }
     /*
@@ -104,7 +104,7 @@ class Politician {
                                  WHERE Votes.name = "Olympia Snowe"`;
         db.all(queryfilterFive, function (err, data) {
             if (err) throw err
-            console.log(data);
+            console.table(data);
         })
     }
 
