@@ -118,9 +118,83 @@ function updateVoter(voterId,first_name,last_name,gender,age){
 
 }
 
+function partyR(){
+    let query = `SELECT * FROM Politicians WHERE party = 'R' 
+                 AND grade_current  BETWEEN 9 AND 11`
+    
+    db.all(query,function(err,data){
+        if (err) throw (err)
+        console.table(data)
+
+    })
+}
+
+function OlympiaSnoweVote(){
+let query = `SELECT  COUNT(Votes.politicianId) AS TotalVote, name 
+             FROM Politicians
+             JOIN  Votes
+             ON Politicians.politicianId = Votes.politicianId
+             WHERE name = "Olympia Snowe"`
+
+db.all(query,function(err,data){
+    if(err) throw (err)
+    console.table(data)
+})
+
+}
+
+function countVoteAdam(){
+    let query = `SELECT  name,COUNT(name) as TotalVote 
+                 FROM Politicians
+                 JOIN  Votes
+                 ON Politicians.politicianId= Votes.politicianId
+                 WHERE Politicians.name LIKE '%adam%' 
+                 GROUP BY name`
+
+    db.all(query,function(err,data){
+        if(err) throw (err)
+        console.table(data)
+    })
+}
+
+function threeMostVote(){
+    let query = `SELECT  COUNT(*) AS totalVote,name, party, location 
+                 FROM Politicians
+                    JOIN  Votes
+                    ON Politicians.politicianId = Votes.politicianId
+                 GROUP BY name
+                 ORDER BY totalVote DESC
+                 LIMIT 3`
+    db.all(query,function(err,data) {
+        if(err) throw (err)
+        console.table(data)
+    })
+}
+
+function votersOlympiaSnowe(){
+    let query = `SELECT first_name, last_name, gender,age FROM Votes
+                 INNER JOIN  Politicians
+                 ON Votes.politicianId = Politicians.politicianId 
+                 INNER JOIN Voters
+                 ON Voters.VoterId = Votes.voterId
+                 WHERE name = 'Olympia Snowe'`
+
+    db.all(query, function(err,data){
+        if (err) throw (err)
+        console.table(data)
+    })
+
+}
+
+
 // insertDataPolitician()
 // insertDataVoter()
 // insertDataVote()
+// partyR()
+// OlympiaSnoweVote()
+// countVoteAdam()
+// threeMostVote()
+// votersOlympiaSnowe()
 
 // addVoter('Cimz','Mingz','male',30)
 // addPolitician('mingzci','PIN','Jakarta', 10.000000000)

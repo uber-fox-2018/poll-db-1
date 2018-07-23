@@ -18,5 +18,6 @@
   "homepage": "https://github.com/uber-fox-2018/poll-db-1#readme",
   "dependencies": {
     "sqlite3": "^4.0.2"
-  }
+  },
+  "devDependencies": {}
 }
