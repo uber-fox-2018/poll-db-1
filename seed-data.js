@@ -150,7 +150,7 @@ function number2() {
     ON Politicians.politicianId = Votes.politicianId
     WHERE Politicians.name = 'Olympia Snowe'`
 
-    db.run(query, function(err){
+    db.all(query, function(err){
         if(err) throw err
     })
 }
@@ -162,7 +162,7 @@ function number3() {
                  where Politicians.name like 'Adam%'
                  group by Politicians.name`
 
-    db.run(query, function(err){
+    db.all(query, function(err){
         if(err) throw err
     })                 
 }
@@ -175,7 +175,7 @@ function number4() {
                  order by totalVote desc
                  limit 3`
 
-    db.run(query, function(err){
+    db.all(query, function(err){
         if(err) throw err
     })  
 }
@@ -188,7 +188,7 @@ function number5() {
                  Votes.politicianId = Politicians.politicianId
                  where Politicians.name = 'Olympia Snowe'`
 
-    db.run(query, function(err){
+    db.all(query, function(err){
         if(err) throw err
     })  
 }
