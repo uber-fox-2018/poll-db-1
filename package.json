@@ -1,0 +1,25 @@
+{
+  "name": "poll-db-1",
+  "version": "1.0.0",
+  "description": "poll-db-1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uber-fox-2018/poll-db-1.git"
+  },
+  "keywords": [
+    "poll-db-1-sqlite3"
+  ],
+  "author": "arisupriatna14",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uber-fox-2018/poll-db-1/issues"
+  },
+  "homepage": "https://github.com/uber-fox-2018/poll-db-1#readme",
+  "dependencies": {
+    "cli-table": "^0.3.1"
+  }
+}
