@@ -10,7 +10,7 @@ class Politician {
     let create = `INSERT INTO politicians (name, party, location, grade_current) VALUES ("${name}", "${party}", "${location}", "${grade_current}")`;
 
     db.run(create, err => {
-      err ? console.log('There is an error!') : console.table('Data successfully created.')
+      err ? console.log('There is an error!') : console.log('Data successfully created.')
     });
     
   };
@@ -34,7 +34,7 @@ class Politician {
   }
   
   search(party) {
-    let search = `SELECT name, party, grade_current FROM politicians WHERE  party = 'R' AND grade_current BETWEEN 9 AND 11`;
+    let search = `SELECT name, party, grade_current FROM politicians WHERE  party = '${party}' AND grade_current BETWEEN 9 AND 11`;
     db.all(search, (err,data) => {
       err ? console.log('Something error!') : console.table(data);
     });
@@ -50,4 +50,4 @@ let politician = new Politician();
 // politician.update(22, 'Muhammad Reynand Al-Fatih', 'AM', 'PL', 17);
 // politician.delete(21);
 
-politician.search();
+politician.search('R');
