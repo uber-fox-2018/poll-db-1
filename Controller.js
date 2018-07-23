@@ -9,10 +9,10 @@ class Controller {
     }
 
     command() {
-        if(this.input[0] == 'politicians') {
-            this.politicians()
-        } else if(this.input[0] == 'addPolitician') {
+        if (this.input[0] == 'addPolitician') {
             this.addingPolitician()
+        } else if(this.input[0] == 'readPolitician') {
+            this.readingPolitician()
         } else if(this.input[0] == 'addVoter') {
             this.addingVoter()
         } else if(this.input[0] == 'addVote') {
@@ -45,15 +45,11 @@ class Controller {
         Model.addPolitician(name, party, location, grade_current)
     }
 
-    politicians() {
-        // let dataPoliticians = Model.ReadPoliticians();
-        // Model.WriteFromCSVPoliticians(dataPoliticians)
-
-        // let dataVoters = Model.ReadVoters();
-        // Model.WriteFromCSVVoters(dataVoters);
-
-        // let dataVotes = Model.ReadVotes();
-        // Model.WriteFromCSVVotes(dataVotes);
+    // read politicians from argv 
+    readingPolitician() {
+        Model.readingPolitician((data) => {
+            View.Display(data)
+        });
     }
 }
 
