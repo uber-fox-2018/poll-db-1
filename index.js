@@ -12,6 +12,11 @@ switch (command){
     display.message(text)
   });
   break;
+  case 'update' :
+  CUD.updateData(input[0], input[1], input.slice(2), (text)=> {
+    display.message(text)
+  });
+  break;
   default :
   display.help();
 }

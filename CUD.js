@@ -31,8 +31,39 @@ class CUD {
     }
   }
 
-  static update (tableName, data, cb){
+  static updateData (tableName, id, input, cb){
+    let arrQuery = []  
+    for (let i = 0; i < input.length - 1; i+=2){
+      arrQuery.push(`${input[i]} = '${input[i + 1]}'`)
+    }
+    let setQuery = arrQuery.join(', ');
     
+    if (tableName == 'Politicians'){
+      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
+        if (err) {
+          cb(err.message);
+        } else {
+          cb(`data in ${tableName} table updated succesfully`);
+        }
+      });
+    } 
+    else if (tableName == 'Voters'){
+      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
+        if (err) {
+          cb(err.message);
+        } else {
+          cb(`data in ${tableName} table updated succesfully`);
+        }
+      });
+     } else {
+      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
+        if (err) {
+          cb(err.message);
+        } else {
+          cb(`data in ${tableName} table updated succesfully`);
+        }
+      });
+    }
   }
 }
 
