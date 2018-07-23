@@ -44,6 +44,20 @@ class Model {
         })
     }
 
+    // read jumlah vote 3 besar
+    static readingPoliticianThre(dataQuery) {
+        let query = `select count(*) as totalVote, * 
+                    from votes join politicians 
+                    on votes.politician_id = politicians.id
+                    group by politicians.name
+                    order by totalVote desc limit 3`;
+        db.all(query, (err, data) => {
+            dataQuery(data);
+        })
+    }
+
+
+
     // Insert voter from argv
     static addVoter(first_name, last_name, gender, age) {
         let query = `INSERT INTO voters (first_name, last_name, gender, age)

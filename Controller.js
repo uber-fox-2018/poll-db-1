@@ -19,6 +19,8 @@ class Controller {
             this.readingPoliticianOlympia()
         } else if(this.input[0] == 'adam') {
             this.readingPoliticianAdam()
+        } else if(this.input[0] == 'three') {
+            this.readingPoliticianThre()
         } else if(this.input[0] == 'addVoter') {
             this.addingVoter()
         } else if(this.input[0] == 'addVote') {
@@ -78,6 +80,14 @@ class Controller {
             View.Display(data);
         })
     }
+
+    // 3 besar
+    readingPoliticianThre() {
+        Model.readingPoliticianThre( (data) => {
+            View.Display(data);
+        })
+    }
+
 
 }
 
