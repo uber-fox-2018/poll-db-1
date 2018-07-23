@@ -8,12 +8,17 @@ switch (command){
   display.help();
   break;
   case 'add' :
-  CUD.add(input[0], input.slice(1), (text)=> {
+  CUD.addData(input[0], input.slice(1), (text)=> {
     display.message(text)
   });
   break;
   case 'update' :
   CUD.updateData(input[0], input[1], input.slice(2), (text)=> {
+    display.message(text)
+  });
+  break;
+  case 'delete' :
+  CUD.deleteData(input[0], input[1], (text)=> {
     display.message(text)
   });
   break;

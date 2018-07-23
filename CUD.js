@@ -3,7 +3,7 @@ const db = new sqlite3.Database('./poll.db');
 
 class CUD {
 
-  static add (tableName, data, cb){
+  static addData (tableName, data, cb){
     if (tableName == 'Politicians'){
       db.run(`INSERT INTO ${tableName} (name, party, location, grade_current) VALUES (?, ?, ?, ?)`, data, (err) => {
         if (err) {
@@ -38,32 +38,23 @@ class CUD {
     }
     let setQuery = arrQuery.join(', ');
     
-    if (tableName == 'Politicians'){
-      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
-        if (err) {
-          cb(err.message);
-        } else {
-          cb(`data in ${tableName} table updated succesfully`);
-        }
-      });
-    } 
-    else if (tableName == 'Voters'){
-      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
-        if (err) {
-          cb(err.message);
-        } else {
-          cb(`data in ${tableName} table updated succesfully`);
-        }
-      });
-     } else {
-      db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
-        if (err) {
-          cb(err.message);
-        } else {
-          cb(`data in ${tableName} table updated succesfully`);
-        }
-      });
-    }
+    db.run(`UPDATE ${tableName} SET ${setQuery} WHERE id = ${id}`, (err) => {
+      if (err) {
+        cb(err.message);
+      } else {
+        cb(`data in ${tableName} table updated succesfully`);
+      }
+    });
+  }
+
+  static deleteData (tableName, id, cb){
+    db.run(`DELETE FROM ${tableName} WHERE id = ${id}`, (err) => {
+      if (err) {
+        cb(err.message);
+      } else {
+        cb(`data in ${tableName} table deleted succesfully`);
+      }
+    });
   }
 }
 
