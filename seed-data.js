@@ -139,8 +139,9 @@ function number1() {
                  where party = 'R' AND 
                  grade_current < 11 AND grade_current > 9`
 
-    db.run(query, function(err){
+    db.run(query, function(err,data){
         if(err) throw err
+        console.log(data);
     })
 }
 
@@ -150,8 +151,9 @@ function number2() {
     ON Politicians.politicianId = Votes.politicianId
     WHERE Politicians.name = 'Olympia Snowe'`
 
-    db.all(query, function(err){
+    db.all(query, function(err,data){
         if(err) throw err
+        console.log(data);
     })
 }
 
@@ -162,8 +164,9 @@ function number3() {
                  where Politicians.name like 'Adam%'
                  group by Politicians.name`
 
-    db.all(query, function(err){
+    db.all(query, function(err,data){
         if(err) throw err
+        console.log(data);
     })                 
 }
 
@@ -175,8 +178,9 @@ function number4() {
                  order by totalVote desc
                  limit 3`
 
-    db.all(query, function(err){
+    db.all(query, function(err,data){
         if(err) throw err
+        console.log(data);
     })  
 }
 
@@ -188,8 +192,9 @@ function number5() {
                  Votes.politicianId = Politicians.politicianId
                  where Politicians.name = 'Olympia Snowe'`
 
-    db.all(query, function(err){
+    db.all(query, function(err,data){
         if(err) throw err
+        console.log(data);
     })  
 }
 
