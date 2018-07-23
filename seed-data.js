@@ -48,7 +48,6 @@ class Voter {
                 })
             }
         }
-
     }
 }
 
@@ -68,22 +67,22 @@ class Display {
         })
     }
 
-    static release_3_3(){
+    static release_3_3() {
         db.all("SELECT name, COUNT (name) as TotalVote FROM  votes LEFT JOIN  politicians ON  politicians.id = votes.politician_id WHERE politicians.name LIKE '%Adam%' GROUP BY name ORDER BY TotalVote ASC", (err, tables) => {
             if (err) throw err
             console.log(tables);
         })
     }
 
-    static release_3_4(){
+    static release_3_4() {
         db.all("SELECT COUNT (name) as TotalVote, name, party, location FROM  votes LEFT JOIN  politicians ON  politicians.id = votes.politician_id GROUP BY name ORDER BY TotalVote DESC LIMIT 3", (err, tables) => {
             if (err) throw err
             console.log(tables);
         })
     }
 
-    static release_3_5(){
-        db.all("SELECT first_name, last_name, gender, age FROM voters LEFT JOIN votes ON voters.id = votes.voterId WHERE politician_id = ( select id from politicians where politicians.name = 'Olympia Snowe')", (err, tables) => {
+    static release_3_5() {
+        db.all("SELECT first_name, last_name, gender, age FROM voters LEFT JOIN votes ON voters.id = votes.voter_id WHERE politician_id = ( select id from politicians where politicians.name = 'Olympia Snowe')", (err, tables) => {
             if (err) throw err
             console.log(tables);
         })
