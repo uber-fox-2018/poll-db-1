@@ -1,6 +1,6 @@
 //your code here
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./database/poll_db');
+var db = new sqlite3.Database('./database/db_poll.db');
 
 // Insert the table
 db.serialize(function() {

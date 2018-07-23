@@ -21,7 +21,7 @@ class ParserData {
         let insert_data = insert
 
         let result = []
-        for(let i = 0; i < insert_data.length-1; i++){
+        for(let i = 0; i < insert_data.length; i++){
             let query
             query = `INSERT INTO politicians (name, party, location, grade_current) VALUES ('${insert_data[i][0]}', '${insert_data[i][1]}', '${insert_data[i][2]}', '${insert_data[i][3]}')`
             result.push(query)
@@ -34,7 +34,7 @@ class ParserData {
         let insert_data = insert
 
         let result = []
-        for(let i = 0; i < insert_data.length-1; i++){
+        for(let i = 0; i < insert_data.length; i++){
             let query
             query = `INSERT INTO voters (first_name, last_name, gender, age) VALUES ('${insert_data[i][0]}', '${insert_data[i][1]}', '${insert_data[i][2]}', '${insert_data[i][3]}')`
             result.push(query)
@@ -47,7 +47,7 @@ class ParserData {
         let insert_data = insert
 
         let result = []
-        for(let i = 0; i < insert_data.length-1; i++){
+        for(let i = 0; i < insert_data.length; i++){
             let query
             query = `INSERT INTO votes (voter_id, politician_id) VALUES ('${insert_data[i][0]}', '${insert_data[i][1]}')`
             result.push(query)
@@ -56,14 +56,16 @@ class ParserData {
         return result
     }
 
+
     static runInsert(dataInsert){
 
         // console.log(dataInsert.length)
         for(let i = 0; i < dataInsert.length; i++){
-            db.run(dataInsert[i], function (err) {
-                if (err) throw err;
-                // console.log('Successfully created a new row!');
-            });
+            db.serialize(() => {
+                db.run(dataInsert[i], function (err) {
+                    if (err) throw err;
+                });
+            })
         }
     }
 }
@@ -78,8 +80,8 @@ let data_voters = ParserData.parseToArr(dataVoters);
 let data_votes = ParserData.parseToArr(dataVotes);
 
 //== insert data votes
-let dataInsertVotes = ParserData.insertDataVotes(data_votes)
-ParserData.runInsert(dataInsertVotes)
+// let dataInsertVotes = ParserData.insertDataVotes(data_votes)
+// ParserData.runInsert(dataInsertVotes)
 
 //== insert data voters
 // let dataInsertVoters = ParserData.insertDataVoters(data_voters)
