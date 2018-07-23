@@ -13,6 +13,12 @@ class Controller {
             this.addingPolitician()
         } else if(this.input[0] == 'readPolitician') {
             this.readingPolitician()
+        } else if(this.input[0] == 'readPoliticianR') {
+            this.readingPoliticianPartyRGradeNineToEleven()
+        } else if(this.input[0] == 'olympia') {
+            this.readingPoliticianOlympia()
+        } else if(this.input[0] == 'adam') {
+            this.readingPoliticianAdam()
         } else if(this.input[0] == 'addVoter') {
             this.addingVoter()
         } else if(this.input[0] == 'addVote') {
@@ -51,6 +57,28 @@ class Controller {
             View.Display(data)
         });
     }
+
+    // Party R and grade 9 > 11
+    readingPoliticianPartyRGradeNineToEleven() {
+        Model.readingPoliticianPartyRGradeNineToEleven((data) => {
+            View.Display(data)
+        });
+    }
+
+    // Olympia
+    readingPoliticianOlympia() {
+        Model.readingPoliticianOlympia( (data) => {
+            View.Display(data);
+        })
+    }
+
+    // Adam
+    readingPoliticianAdam() {
+        Model.readingPoliticianAdam( (data) => {
+            View.Display(data);
+        })
+    }
+
 }
 
 module.exports = Controller
