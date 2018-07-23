@@ -6,29 +6,34 @@ class DataDealer{
 
 	}
 
-	static loadDataFromCSVAsync(fileDir, loadDataHandler){
-		fs.readFile(fileDir, "utf8",(err, data)=>{
-			if(err) throw err;
-			loadDataHandler(data);
-		});
-	}
-
 	static loadDataFromCSV(fileCSVDir){
 		let [columnName, ...data] = fs.readFileSync(fileCSVDir, "utf8").split("\n").map(x=>x.split(","));
-		return [columnName, data];
+		return [columnName,data];
 	}
 
 	static loadColumnsInfo(tableName, withId=false, loadColumnInfoHandler){
 		db.all(`PRAGMA table_info(${tableName});`, (err, rows)=>{
-			let columnNames = rows.map(x=>x.type);
+			let columnInfos = rows;
 			if(!withId){
-				columnNames = columnNames.slice(1);
+				columnInfos = columnInfos.slice(1);
 			}
-			loadColumnInfoHandler(columnNames);
+			loadColumnInfoHandler(columnInfos);
 		});
 	}
 
-	static convert_decisions(columnDataType, dataArgs){
+	static loadColumnsTypes(tableName, withId, loadColumnTypeHandler){
+		DataDealer.loadColumnsInfo(tableName, withId, (columnInfos)=>{
+			loadColumnTypeHandler(columnInfos.map(x=>x.type));
+		});
+	}
+
+	static loadColumnsNames(tableName, withId, loadColumnNameHandler){
+		DataDealer.loadColumnsInfo(tableName, withId,(columnInfos)=>{
+			loadColumnNameHandler(columnInfos.map(x=>x.name));
+		});
+	}
+
+	static AddQuotesOrNot(columnDataType, dataArgs){
 		for(let dataKey in dataArgs){
 			if(columnDataType[dataKey].match(/CHAR/g) || columnDataType[dataKey] === "TEXT"){
 				dataArgs[dataKey] = `"${dataArgs[dataKey]}"`;
@@ -38,37 +43,58 @@ class DataDealer{
 	}
 
 	static insertIntoTableFromCSV(tableName, fileCSVDir, withId){
-		let result = this.loadDataFromCSV(fileCSVDir);
-		this.loadColumnsInfo(tableName, withId,(datatypes)=>{
-			let convertedForQuery = result[1].map(x=>DataDealer.convert_decisions(datatypes, x));
-			for (let data of convertedForQuery){
-				let query = `INSERT INTO ${tableName}(${result[0]}) VALUES (${data})`;
-				db.run(query,(err)=>{
-					console.log(err, query);
-				});
+		let dataArrFromCSV = this.loadDataFromCSV(fileCSVDir);
+		
+		this.loadColumnsInfo(tableName, withId,(columnInfo)=>{
+			let convertedForQuery = [];
+
+			for(let data of dataArrFromCSV[1]){
+				convertedForQuery.push(`(${DataDealer.AddQuotesOrNot(columnInfo.map(x=>x.type), data)})`);
 			}
+
+			let query = `INSERT INTO ${tableName}(${columnInfo.map(x=>x.name)}) VALUES ${convertedForQuery.join(",")}`;
+			DataDealer.runQuery(query, console.log);
 		});
 	}
 
-	static insertIntoTable(tableName, withId, newRowArgs){
-		this.loadColumnsInfo(tableName, withId,(datatypes)=>{
-			let convertedForQuery = DataDealer.convert_decisions(datatypes, newRowArgs);
-			let query = `INSERT INTO ${tableName}(${result[0]}) VALUES (${data})`;
-			db.run(query,(err)=>{
-				console.log(err, query);
-			});
+	static updateIntoTable(tableName, targetColumn, newData, columnIdName, idDataToUpdate){
+		DataDealer.loadColumnsInfo(tableName, false, (columnsInfo)=>{
+			for(let columnInfo of columnsInfo){
+				if(columnInfo.name === targetColumn){
+					let dataType = columnInfo.type;
+					let convertedArgs = DataDealer.AddQuotesOrNot([dataType],[newData]);
+					let query = `UPDATE ${tableName} SET ${targetColumn} = ${convertedArgs} WHERE ${columnIdName} = ${idDataToUpdate};`;
+					DataDealer.runQuery(query, console.log);
+				}
+			}
+		});
+		
+		
+	}
+
+	static deleteFromTable(tableName, idData, columnIdName){
+		let query = `DELETE FROM ${tableName} WHERE ${columnIdName} = ${idData}`;
+		DataDealer.runQuery(query, console.log);
+		
+	}
+
+	static runQuery(query, errCallback){
+		db.run(query,(err)=>{
+			errCallback(err, query);
 		});
 	}
 
 }
 
-DataDealer.insertIntoTable("politicians", "./politicians.csv");
-DataDealer.insertIntoTable("Voters", "./voters.csv");
-DataDealer.insertIntoTable("Votes", "./votes.csv");
 
 
+//CRUD 
+//DataDealer.deleteFromTable("Politicians", 22, "politicianId");
+//DataDealer.insertIntoTable("Politicians", ["eri", "R", "IN", 12.000]);
+//DataDealer.updateIntoTable("Politicians", "name", "John WICK", "politicianId", 21);
 
-//let data = ["1", "asdfasdf", "eri", "asdfasd", "0999"];
 
-//DataDealer.convert_decisions([ 'INTEGER', 'VARCHAR(30)', 'VARCHAR(1)', 'VARCHAR(2)', 'REAL' ],data);
-//console.log(...data);
+//DATA SEEDING;
+DataDealer.insertIntoTableFromCSV("politicians", "./politicians.csv");
+DataDealer.insertIntoTableFromCSV("Voters", "./voters.csv");
+DataDealer.insertIntoTableFromCSV("Votes", "./votes.csv");
