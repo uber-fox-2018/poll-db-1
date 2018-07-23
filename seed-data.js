@@ -1,5 +1,5 @@
 const fs = require('fs');
-const db =require('./setup')
+const db = require('./setup')
 
 class Politic {
     static parser_politicians (){
@@ -60,7 +60,6 @@ class Politic {
     }
 
     static insert_all_data (arr){
-        
         for (let i = 0 ; i < arr.length ; i++){
             console.log(arr[i]);
             
@@ -68,6 +67,54 @@ class Politic {
                 if (err) throw err
             });
         }
+    }
+
+    /*  Tampilkan nama politician, partai dan grade_current politician
+        tersebut yang berada di partai R dan memiliki grade_current
+        range 9 s/d 11 */
+
+    static display_release3_1(){
+        db.all("SELECT * FROM politicians where grade_current BETWEEN 9 AND 11 AND party = 'R' ORDER BY grade_current", function (err, tables){
+            if (err) throw err
+            console.log(tables);
+        })
+    }
+
+    /*  Hitung jumlah vote untuk politician yang bernama Olympia Snowe */
+
+    static display_release3_2(){
+        db.all("SELECT COUNT(*) as TotalVote, politicians.name FROM  votes LEFT JOIN  politicians ON  politicians.id = votes.politicianId WHERE name = 'Olympia Snowe'", function (err, tables){
+            if (err) throw err
+            console.log(tables);
+        })
+    }
+
+    /*  Hitung jumlah vote untuk politician yang nama-nya mengandung kata Adam */
+
+    static display_release3_3(){
+        db.all("SELECT name, COUNT (name) as TotalVote FROM  votes LEFT JOIN  politicians ON  politicians.id = votes.politicianId WHERE politicians.name LIKE '%Adam%' GROUP BY name ORDER BY TotalVote ASC", function (err, tables){
+            if (err) throw err
+            console.log(tables);
+        })
+    }
+
+    /*  Tampilkan 3 Politician beserta nama partai dan lokasi Politician tersebut,
+        yang memiliki suara terbanyak. */
+
+    static display_release3_4(){
+        db.all("SELECT COUNT (name) as TotalVote, name, party, location FROM  votes LEFT JOIN  politicians ON  politicians.id = votes.politicianId GROUP BY name ORDER BY TotalVote DESC LIMIT 3", function (err, tables){
+            if (err) throw err
+            console.log(tables);
+        })
+    }
+
+    /*  Tampilkan siapa saja yang melakukan voting ke politician yang bernama Olympia Snowe */
+
+    static display_release3_5(){
+        db.all("SELECT first_name, last_name, gender, age FROM voters LEFT JOIN votes ON voters.id = votes.voterId WHERE politicianId = ( select id from politicians where politicians.name = 'Olympia Snowe')", function (err, tables){
+            if (err) throw err
+            console.log(tables);
+        })
     }
 }
 
@@ -81,4 +128,10 @@ let result_table_votes = Politic.insert_table_votes(resultVotes)
 
 // Politic.insert_all_data(result_table_politicians)
 // Politic.insert_all_data(result_table_voters)
-Politic.insert_all_data(result_table_votes)
+// Politic.insert_all_data(result_table_votes)
+
+Politic.display_release3_1()
+Politic.display_release3_2()
+Politic.display_release3_3()
+Politic.display_release3_4()
+Politic.display_release3_5()
