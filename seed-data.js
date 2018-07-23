@@ -170,9 +170,9 @@ totalVote_Olympia()
 // 3
 function show_Adam() {
     let query_Show_Adam = `SELECT COUNT(*) AS totalVotes, name FROM Politicians 
-	                        INNER JOIN Votes ON Politicians.politicianID = Votes.politicianID
-	                        WHERE name LIKE 'Adam%'
-                            GROUP BY name`
+                        INNER JOIN Votes ON Politicians.politicianID = Votes.politicianID
+                        WHERE name LIKE 'Adam%'
+                        GROUP BY name`
     db.all(query_Show_Adam, function(err, data) {
         if (err) throw err
         console.table(data)
